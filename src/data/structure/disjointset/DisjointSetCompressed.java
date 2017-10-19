@@ -7,7 +7,7 @@ public class DisjointSetCompressed {
 	private int ARRAY_LENGTH;
 	private int[] Size;
 
-	void initialize(int arrayLength) {
+	public void initialize(int arrayLength) {
 		this.ARRAY_LENGTH = arrayLength;
 		Array = new int[this.ARRAY_LENGTH + 1];
 		Size = new int[this.ARRAY_LENGTH + 1];
@@ -18,7 +18,7 @@ public class DisjointSetCompressed {
 		}
 	}
 
-	int root(int A) {
+	public int root(int A) {
 		while (Array[A] != A) {
 			Array[A] = Array[Array[A]]; // This is how we set the value to its
 										// GrandParent.
@@ -27,7 +27,7 @@ public class DisjointSetCompressed {
 		return A;
 	}
 
-	void union(int A, int B) {
+	public void union(int A, int B) {
 		int root_A = root(A);
 		int root_B = root(B);
 		if (root_A != root_B) {
@@ -41,7 +41,7 @@ public class DisjointSetCompressed {
 		}
 	}
 
-	protected boolean find(int A, int B) {
+	public boolean find(int A, int B) {
 		boolean areConnected = false;
 		if (root(A - 1) == root(B - 1)) {
 			areConnected = true;

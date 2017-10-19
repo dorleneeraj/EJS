@@ -1,12 +1,13 @@
 package data.structure.disjointset;
 
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.InputMismatchException;
 
 public class Codeforces {
 	public static InputStream inputStream = System.in;
@@ -161,8 +162,7 @@ public class Codeforces {
 			a[i] = nl();
 		return a;
 	}
-	// private void tr(Object... o) { if(o.length() >
-	// 0)System.out.println(Arrays.deepToString(o)); }
+
 }
 
 class FastReader {
