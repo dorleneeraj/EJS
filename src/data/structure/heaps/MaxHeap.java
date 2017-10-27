@@ -1,10 +1,12 @@
 package data.structure.heaps;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * 
@@ -14,7 +16,10 @@ import java.util.Map;
  *            This is the data that node holds.
  * @param <K>
  *            This is the key on which the heap property is maintained. This
- *            property has to be unique
+ *            property has to be unique.
+ * 
+ *            Well, that was what I thought. But the key can be duplicate.
+ * 
  */
 public class MaxHeap<T, K> {
 
@@ -99,18 +104,69 @@ public class MaxHeap<T, K> {
 
 	}
 
+	static class ListComparator<T, K> implements Comparator<Node<T, K>> {
+
+		@Override
+		public int compare(Node<T, K> o1, Node<T, K> o2) {
+			int returnVal = 1;
+			if (null != o1 && null != o2) {
+				Integer i1 = (Integer) o1.key;
+				Integer i2 = (Integer) o2.key;
+				if (i1 < i2) {
+					returnVal = -1;
+				} else {
+					returnVal = 1;
+				}
+			}
+			return returnVal;
+		}
+
+	}
+
+	/**
+	 * Returns 1 if o2 is greater than o1
+	 * 
+	 * @author neeraj
+	 *
+	 * @param <K>
+	 */
+	static class KIntegerComparator<K> implements Comparator<K> {
+
+		@Override
+		public int compare(K o1, K o2) {
+			Integer i1 = (Integer) o1;
+			Integer i2 = (Integer) o2;
+			if (i2 > i1) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+	}
+
 	private List<Node<T, K>> maxHeap;
 	private Map<K, List<Integer>> keyToPositionMap; // Fast access of the
-													// position of
+													// position of the element
+													// in the List.Else, we will
+													// have to search the
+													// complete list every time
+													// to get the index of the
+													// node
 
-	// the element in the List.
-	// Else, we will have to search
-	// the complete list every time
-	// to get the index of the node
+	private int length = 0;
+	private int heapSize = 0;
 
-	public void init() {
+	public MaxHeap() {
 		maxHeap = new ArrayList<Node<T, K>>();
 		keyToPositionMap = new HashMap<K, List<Integer>>();
+	}
+
+	public MaxHeap(List<Node<T, K>> list) {
+		this();
+		this.maxHeap = list;
+		buildMaxHeap();
+		this.length = list.size();
 	}
 
 	public int getParentIndex(Node<T, K> node) {
@@ -186,6 +242,7 @@ public class MaxHeap<T, K> {
 		List<Integer> list1 = keyToPositionMap.get(node1.getKey());
 		if (null == list1) {
 			list1 = new ArrayList<Integer>();
+			list1.add(index);
 			keyToPositionMap.put(node1.getKey(), list1);
 		}
 		int removePosition = 0;
@@ -203,6 +260,7 @@ public class MaxHeap<T, K> {
 		List<Integer> list2 = keyToPositionMap.get(node2.getKey());
 		if (null == list2) {
 			list2 = new ArrayList<Integer>();
+			list2.add(nextIndex);
 			keyToPositionMap.put(node2.getKey(), list2);
 		}
 		removePosition = 0;
@@ -229,25 +287,166 @@ public class MaxHeap<T, K> {
 
 	public void addNode(Node<T, K> node) {
 		maxHeap.add(node);
-		List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = keyToPositionMap.get(node.getKey());
+		if (null == list) {
+			list = new ArrayList<Integer>();
+			keyToPositionMap.put(node.getKey(), list);
+		}
 		list.add(maxHeap.size() - 1);
 		keyToPositionMap.put(node.getKey(), list);
 		if (maxHeap.size() > 1) {
-			this.swapNodes(0, maxHeap.size() - 1);
-			this.maxHeapify(0);
+			// this.swapNodes(0, maxHeap.size() - 1);
+			for (int k = (maxHeap.size() - 1) / 2; k >= 0; k--) {
+				this.maxHeapify(k);
+			}
 		}
+		this.length += 1;
+		this.heapSize += 1;
 	}
 
 	public void addNode(K key, T data) {
 		Node<T, K> node = new Node<T, K>(data, key);
 		maxHeap.add(node);
-		List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = keyToPositionMap.get(key);
+		if (null == list) {
+			list = new ArrayList<Integer>();
+			keyToPositionMap.put(key, list);
+		}
 		list.add(maxHeap.size() - 1);
 		keyToPositionMap.put(node.getKey(), list);
 		if (maxHeap.size() > 1) {
-			this.swapNodes(0, maxHeap.size() - 1);
-			this.maxHeapify(0);
+			// this.swapNodes(0, maxHeap.size() - 1);
+			for (int k = getParentIndex(maxHeap.size() - 1); k >= 0; k--) {
+				this.maxHeapify(k);
+			}
 		}
+		this.length += 1;
+		this.heapSize += 1;
+	}
+
+	public int length() {
+		return this.length;
+	}
+
+	public int getHeapSize() {
+		return this.heapSize;
+	}
+
+	public boolean isEmpty() {
+		return this.heapSize == 0 ? true : false;
+	}
+
+	public List<Node<T, K>> sort() {
+		// copy all the data and then perform all the operations on the old
+		// copied data.
+		// So that the original structure of the heap is not lost.
+
+		Stack<Node<T, K>> stack = new Stack<MaxHeap.Node<T, K>>();
+		int oldLen = this.length;
+		int oldHeapSize = this.heapSize;
+		List<Node<T, K>> oldHeap = new ArrayList<Node<T, K>>();
+		for (Node<T, K> node : maxHeap) {
+			Node<T, K> n = new Node<T, K>(node.getData(), node.getKey());
+			oldHeap.add(n);
+		}
+
+		HashMap<K, List<Integer>> oldPositionMap = new HashMap<K, List<Integer>>();
+		for (K key : keyToPositionMap.keySet()) {
+			List<Integer> l = new ArrayList<Integer>(keyToPositionMap.get(key));
+			oldPositionMap.put(key, l);
+		}
+		if (this.length > 1 && this.heapSize > 1) {
+			int i = this.heapSize;
+			while (i >= 1) {
+				swapNodes(this.heapSize - 1, 0);
+				// remove the node from keyToPositionMap
+				removeFromPositionMap(this.maxHeap.get(this.heapSize - 1),
+						this.heapSize - 1);
+				this.heapSize = heapSize - 1;
+				stack.push(maxHeap.remove(maxHeap.size() - 1));
+				this.maxHeapify(0);
+				i--;
+			}
+		}
+
+		// restore the old values
+		this.length = oldLen;
+		this.heapSize = oldHeapSize;
+		this.maxHeap = oldHeap;
+		this.keyToPositionMap = oldPositionMap;
+
+		return stack;
+
+	}
+
+	// The above method for sorting is a traditional one. But as we have
+	// provided
+	// a Comparator function, we can simply use .sort on the maxHeap list.
+
+	public List<Node<T, K>> sortHeap() {
+		List<Node<T, K>> sortedHeap = new ArrayList<Node<T, K>>(this.maxHeap);
+		Collections.sort(sortedHeap, new ListComparator<T, K>());
+		return sortedHeap;
+	}
+
+	public void increaseKey(int index, K Key, Comparator<K> comparator) {
+		if (index >= 0 && index < this.heapSize) {
+			Node<T, K> node = maxHeap.get(index);
+			removeFromPositionMap(node, index);
+			IntegerComparator<T, Integer> iComparator = new IntegerComparator<T, Integer>();
+
+			K oldKey = node.getKey();
+			if (comparator.compare(oldKey, Key) > 0) {
+				node.setKey(Key);
+				int parentIndex = getParentIndex(index);
+				while (iComparator.compare((Node<T, Integer>) node,
+						(Node<T, Integer>) maxHeap.get(parentIndex)) > 0) {
+					swapNodes(index, parentIndex);
+					node = maxHeap.get(parentIndex);
+					index = parentIndex;
+					parentIndex = getParentIndex(parentIndex);
+				}
+			}
+		}
+	}
+
+	public Node<T, K> extractMAX() {
+		Node<T, K> node = null;
+		if (heapSize >= 0) {
+			swapNodes(0, heapSize - 1);
+			removeFromPositionMap(maxHeap.get(heapSize - 1), heapSize - 1);
+			node = maxHeap.remove(heapSize - 1);
+			maxHeapify(0);
+			length = length - 1;
+			heapSize = heapSize - 1;
+		}
+		return node;
+	}
+
+	private void removeFromPositionMap(Node<T, K> node, int index) {
+		List<Integer> list = keyToPositionMap.get(node.getKey());
+		if (null != list) {
+			int counter = 0;
+			for (Integer i : list) {
+				if (maxHeap.get(i).equals(node)) {
+					break;
+				}
+				counter++;
+			}
+			list.remove(counter);
+		}
+	}
+
+	private void removeFromPositionMap(Node<T, K> node) {
+	}
+
+	public void buildMaxHeap() {
+		int mid = (length - 1) / 2;
+		while (mid >= 0) {
+			maxHeapify(mid);
+			mid--;
+		}
+		this.heapSize = this.length;
 	}
 
 	@Override
@@ -256,10 +455,57 @@ public class MaxHeap<T, K> {
 	}
 
 	public static void main(String[] args) {
-		MaxHeap<Integer, Integer> maxHeap = new MaxHeap<Integer, Integer>();
-		maxHeap.init();
-		maxHeap.addNode(16, 4);
-		maxHeap.addNode(5, 10);
-		System.out.println(maxHeap.toString());
+		MaxHeap<String, Integer> mHeap = new MaxHeap<String, Integer>();
+		mHeap.addNode(16, "neeraj");
+		mHeap.addNode(21, "Ketki");
+		mHeap.addNode(12, "Viraaj");
+		mHeap.addNode(10, "Rohan");
+		mHeap.addNode(13, "Deven");
+		mHeap.addNode(10, "Pavtya");
+		mHeap.addNode(8, "Shaunak");
+		mHeap.addNode(3, "Tungya");
+		mHeap.addNode(8, "Manyu");
+		mHeap.addNode(1, "Ashok");
+		mHeap.addNode(9, "Sujay");
+		mHeap.addNode(22, "Dorle");
+		mHeap.addNode(18, "Goodluck");
+		mHeap.addNode(14, "Gang");
+		mHeap.addNode(25, "Great");
+		System.out.println(mHeap.toString());
+
+		List<Node<String, Integer>> sortesList1 = mHeap.sort();
+		System.out.println(sortesList1);
+		System.out.println(mHeap.toString());
+
+		List<Node<String, Integer>> sortesList2 = mHeap.sortHeap();
+		System.out.println(sortesList2);
+		System.out.println(mHeap.toString());
+
+		mHeap.increaseKey(12, 32, new KIntegerComparator<Integer>());
+		System.out.println(mHeap.toString());
+
+		while (mHeap.getHeapSize() >= 1) {
+			System.out.println(mHeap.extractMAX());
+		}
+
+		System.out.println(mHeap.toString());
 	}
 }
+
+// List<Integer> list = keyToPositionMap.get(maxHeap
+// .get(heapSize - 1));
+// int index = 0;
+// for (Integer j : list) {
+// if (maxHeap.get(heapSize - 1).equals(maxHeap.get(j))) {
+// break;
+// } else {
+// index++;
+// }
+// }
+// if (index >= 0) {
+// list.remove(index);
+// }
+// if (list.isEmpty()) {
+// keyToPositionMap.remove(maxHeap.get(heapSize - 1).getKey());
+// }
+
