@@ -23,128 +23,6 @@ import java.util.Stack;
  */
 public class MaxHeap<T, K> {
 
-	static class Node<T, K> {
-		private T data;
-		private K key; // The Heap property is maintained using this attribute
-
-		public Node(T data, K key) {
-			this.data = data;
-			this.key = key;
-		}
-
-		public T getData() {
-			return data;
-		}
-
-		public void setData(T data) {
-			this.data = data;
-		}
-
-		public K getKey() {
-			return key;
-		}
-
-		public void setKey(K key) {
-			this.key = key;
-		}
-
-		@Override
-		public String toString() {
-			return "Node [data=" + data + ", key=" + key + "]";
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((data == null) ? 0 : data.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Node other = (Node) obj;
-			if (data == null) {
-				if (other.data != null)
-					return false;
-			} else if (!data.equals(other.data))
-				return false;
-			return true;
-		}
-
-	}
-
-	static class IntegerComparator<T, K> implements Comparator<Node<T, K>> {
-
-		/**
-		 * Return 0 if i1 <= i2. Returns 1 if i1 > i2.
-		 */
-		@Override
-		public int compare(Node<T, K> o1, Node<T, K> o2) {
-
-			int returnVal = 1;
-			if (null != o1 && null != o2) {
-				Integer i1 = (Integer) o1.key;
-				Integer i2 = (Integer) o2.key;
-				if (i1 <= i2) {
-					returnVal = 0;
-				} else {
-					returnVal = 1;
-				}
-			}
-			return returnVal;
-
-		}
-
-	}
-
-	static class ListComparator<T, K> implements Comparator<Node<T, K>> {
-
-		@Override
-		public int compare(Node<T, K> o1, Node<T, K> o2) {
-			int returnVal = 1;
-			if (null != o1 && null != o2) {
-				Integer i1 = (Integer) o1.key;
-				Integer i2 = (Integer) o2.key;
-				if (i1 < i2) {
-					returnVal = -1;
-				} else {
-					returnVal = 1;
-				}
-			}
-			return returnVal;
-		}
-
-	}
-
-	/**
-	 * Returns 1 if o2 is greater than o1
-	 * 
-	 * @author neeraj
-	 *
-	 * @param <K>
-	 */
-	static class KIntegerComparator<K> implements Comparator<K> {
-
-		@Override
-		public int compare(K o1, K o2) {
-			Integer i1 = (Integer) o1;
-			Integer i2 = (Integer) o2;
-			if (i2 > i1) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-
-	}
-
 	private List<Node<T, K>> maxHeap;
 	private Map<K, List<Integer>> keyToPositionMap; // Fast access of the
 													// position of the element
@@ -215,7 +93,7 @@ public class MaxHeap<T, K> {
 					rightChild = maxHeap.get(rightIndex);
 				}
 				Node<T, K> maxNode = null;
-				if ((new IntegerComparator<T, K>().compare(leftChild,
+				if ((new Common.IntegerComparator<T, K>().compare(leftChild,
 						rightChild)) > 0) {
 					maxNode = leftChild;
 					nextIndex = leftChild(index);
@@ -223,8 +101,8 @@ public class MaxHeap<T, K> {
 					maxNode = rightChild;
 					nextIndex = rightChild(index);
 				}
-				if ((new IntegerComparator<T, K>()
-						.compare(currentNode, maxNode)) <= 0) {
+				if ((new Common.IntegerComparator<T, K>().compare(currentNode,
+						maxNode)) <= 0) {
 					swapNodes(index, nextIndex);
 					maxHeapify(nextIndex);
 				}
@@ -341,7 +219,7 @@ public class MaxHeap<T, K> {
 		// copied data.
 		// So that the original structure of the heap is not lost.
 
-		Stack<Node<T, K>> stack = new Stack<MaxHeap.Node<T, K>>();
+		Stack<Node<T, K>> stack = new Stack<Node<T, K>>();
 		int oldLen = this.length;
 		int oldHeapSize = this.heapSize;
 		List<Node<T, K>> oldHeap = new ArrayList<Node<T, K>>();
@@ -385,7 +263,7 @@ public class MaxHeap<T, K> {
 
 	public List<Node<T, K>> sortHeap() {
 		List<Node<T, K>> sortedHeap = new ArrayList<Node<T, K>>(this.maxHeap);
-		Collections.sort(sortedHeap, new ListComparator<T, K>());
+		Collections.sort(sortedHeap, new Common.ListComparator<T, K>());
 		return sortedHeap;
 	}
 
@@ -393,7 +271,7 @@ public class MaxHeap<T, K> {
 		if (index >= 0 && index < this.heapSize) {
 			Node<T, K> node = maxHeap.get(index);
 			removeFromPositionMap(node, index);
-			IntegerComparator<T, Integer> iComparator = new IntegerComparator<T, Integer>();
+			Common.IntegerComparator<T, Integer> iComparator = new Common.IntegerComparator<T, Integer>();
 
 			K oldKey = node.getKey();
 			if (comparator.compare(oldKey, Key) > 0) {
@@ -481,8 +359,26 @@ public class MaxHeap<T, K> {
 		System.out.println(sortesList2);
 		System.out.println(mHeap.toString());
 
-		mHeap.increaseKey(12, 32, new KIntegerComparator<Integer>());
+		mHeap.increaseKey(12, 32, new Common.KIntegerComparator<Integer>());
 		System.out.println(mHeap.toString());
+
+		mHeap.addNode(35, "Great");
+		mHeap.addNode(36, "Great");
+		mHeap.addNode(29, "Great");
+		System.out.println(mHeap);
+
+		sortesList1 = mHeap.sort();
+		System.out.println(sortesList1);
+		System.out.println(mHeap.toString());
+
+		mHeap.extractMAX();
+		System.out.println(mHeap);
+
+		sortesList2 = mHeap.sortHeap();
+		System.out.println(sortesList2);
+		System.out.println(mHeap.toString());
+
+		mHeap.addNode(45, "Lord");
 
 		while (mHeap.getHeapSize() >= 1) {
 			System.out.println(mHeap.extractMAX());
