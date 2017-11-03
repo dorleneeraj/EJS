@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -13,17 +14,19 @@ public class MaxSumSubArray {
 
 	public static void main(String[] args) {
 		System.out.println(new MaxSumSubArray()
-				.byKadanesAlgorithm(new ArrayList<Integer>(
+				.bottomUpWay(new ArrayList<Integer>(
 						Arrays.asList(new Integer[] { -2, 1, -3, 4, -1, 2, 1,
 								-5, 4 }))));
 
-		ArrayList<Integer> A = new ArrayList<Integer>(
-				Arrays.asList(new Integer[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
-		byMemoization(A, 8);
-		System.out.println(maxSum);
-		ArrayList<Integer> maxSubArray = buildList(A);
-		Collections.reverse(maxSubArray);
-		System.out.println(maxSubArray);
+		// ArrayList<Integer> A = new ArrayList<Integer>(
+		// Arrays.asList(new Integer[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
+		// byMemoization(A, 8);
+		// System.out.println(maxSum);
+		// ArrayList<Integer> maxSubArray = buildList(A);
+		// Collections.reverse(maxSubArray);
+		// System.out.println(maxSubArray);
+		System.out.println(maxSubArray(new ArrayList<Integer>(Arrays
+				.asList(new Integer[] { -2, -1, -3 }))));
 	}
 
 	private static ArrayList<Integer> buildList(ArrayList<Integer> A) {
@@ -55,7 +58,7 @@ public class MaxSumSubArray {
 		return list;
 	}
 
-	public ArrayList<Integer> byKadanesAlgorithm(ArrayList<Integer> A) {
+	public ArrayList<Integer> bottomUpWay(ArrayList<Integer> A) {
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		int maxSum = A.get(0);
 		int maxArrayStartingIndex = 0;
@@ -113,5 +116,19 @@ public class MaxSumSubArray {
 			}
 		}
 		return max;
+	}
+
+	static public int maxSubArray(final List<Integer> a) {
+
+		int sum = Integer.MIN_VALUE;
+		int currentSum = 0;
+		for (int num : a) {
+			currentSum += num;
+			sum = Math.max(currentSum, sum);
+			if (currentSum < 0) {
+				currentSum = 0;
+			}
+		}
+		return sum;
 	}
 }
