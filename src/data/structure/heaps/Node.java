@@ -53,7 +53,7 @@ public class Node<T, K> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Node other = (Node) obj;
+		Node<T, K> other = (Node<T, K>) obj;
 		if (data == null) {
 			if (other.data != null)
 				return false;

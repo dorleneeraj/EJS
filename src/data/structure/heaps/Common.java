@@ -33,6 +33,30 @@ public class Common {
 
 	}
 
+	static class IntegerComparator2<T, K> implements Comparator<Node<T, K>> {
+
+		/**
+		 * Return 0 if i1 <= i2. Returns 1 if i1 > i2.
+		 */
+		@Override
+		public int compare(Node<T, K> o1, Node<T, K> o2) {
+
+			int returnVal = 0;
+			if (null != o1 && null != o2) {
+				Integer i1 = (Integer) o1.getKey();
+				Integer i2 = (Integer) o2.getKey();
+				if (i1 <= i2) {
+					returnVal = 0;
+				} else {
+					returnVal = 1;
+				}
+			}
+			return returnVal;
+
+		}
+
+	}
+
 	static class ListComparator<T, K> implements Comparator<Node<T, K>> {
 
 		@Override

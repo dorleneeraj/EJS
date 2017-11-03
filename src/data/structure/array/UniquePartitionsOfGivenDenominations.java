@@ -10,19 +10,34 @@ import java.util.Map;
 public class UniquePartitionsOfGivenDenominations {
 
 	public static void main(String[] args) {
-		System.out.println(coinchange4(
+		// System.out.println(coinchange4(
+		// new ArrayList<Integer>(Arrays.asList(new Integer[] { 18, 24,
+		// 23, 10, 16, 19, 2, 9, 5, 12, 17, 3, 28, 29, 4, 13, 15,
+		// 8 })), 458));
+
+		// List<List<Integer>> l = printUniquePartitionsProgressive(new int[] {
+		// 5,
+		// 2, 1 }, 458);
+		//
+		// for (List<Integer> list : l) {
+		// System.out.println(list);
+		// }
+		// System.out.println(l.size());
+		// System.out.println(coinchange2(new Integer[] { 18, 24, 23, 10, 16,
+		// 19,
+		// 2, 9, 5, 12, 17, 3, 28, 29, 4, 13, 15, 8 }, 458));
+
+		System.out.println(recursiveWays(
 				new ArrayList<Integer>(Arrays.asList(new Integer[] { 18, 24,
 						23, 10, 16, 19, 2, 9, 5, 12, 17, 3, 28, 29, 4, 13, 15,
 						8 })), 458));
 
-//		System.out.println(coinchange2(new Integer[] { 18, 24, 23, 10, 16, 19,
-//				2, 9, 5, 12, 17, 3, 28, 29, 4, 13, 15, 8 }, 458));
 	}
 
 	public static List<List<Integer>> printUniquePartitionsProgressive(
 			int[] denominations, int amount) {
 		int uniqueWaysOfChange = 0;
-		List<List<Integer>> uniqueChangeList = null;
+		List<List<Integer>> uniqueChangeList = Collections.emptyList();
 		if (amount == 0) {
 			uniqueWaysOfChange = 0;
 		} else if (denominations.length == 1) {
@@ -186,6 +201,25 @@ public class UniquePartitionsOfGivenDenominations {
 			}
 		}
 		return dp[amount];
+	}
+
+	static Map<Integer, Integer> waysMemo = new HashMap<Integer, Integer>();
+
+	static public int recursiveWays(List<Integer> coins, int amount) {
+		int ways = 0;
+		if (amount < 0) {
+			ways = 0;
+		} else if (null == coins || coins.isEmpty()) {
+			ways = 0;
+		} else if (amount == 0) {
+			ways = 1;
+		} else {
+			List<Integer> newCoins = new ArrayList<Integer>(coins);
+			newCoins.remove(0);
+			ways = recursiveWays(coins, amount - coins.get(0))
+					+ recursiveWays(newCoins, amount);
+		}
+		return ways;
 	}
 
 }
