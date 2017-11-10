@@ -26,7 +26,7 @@ public class MaxSumSubArray {
 		// Collections.reverse(maxSubArray);
 		// System.out.println(maxSubArray);
 		System.out.println(maxSubArray(new ArrayList<Integer>(Arrays
-				.asList(new Integer[] { -2, -1, -3 }))));
+				.asList(new Integer[] { 4, -3, 3, 8 }))));
 	}
 
 	private static ArrayList<Integer> buildList(ArrayList<Integer> A) {
