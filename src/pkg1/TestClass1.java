@@ -6,12 +6,16 @@ package pkg1;
  * This will obviously have some errors, but just for reference, let them be.
  */
 
+//remove the following comments to see...
+
+
 public class TestClass1 {
 	// default access
-	int x = 1;
+	
+	/* int x = 1 ; */
 
 	// public access
-	public int x = 1; // This is not possible, for obvious reasons. For this
+	/*public int x = 1; */ // This is not possible, for obvious reasons. For this
 						// class
 	// irrespective of their access modifiers, they are internal for the class
 	// itself.
@@ -19,10 +23,12 @@ public class TestClass1 {
 
 	
 	// Same as above.... So we can't have duplicate identifiers.
+	
+/*	
 	private int x = 1;
 
 	static final int x = 1;
 
 	final String x = "Neeraj";
-
+*/
 }

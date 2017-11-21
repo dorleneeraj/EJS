@@ -14,20 +14,31 @@ import scjp.chapter1.accessControl.TestProtectedModifier;
 
 public class TestProtectedModifierDifferentPKG {
 
+	//remove the following comments to see...
+	
+	
 	public static void main(String[] args) {
 		// Same package. Class is visible.
 
 		TestProtectedModifier tPM = new TestProtectedModifier();
 
 		// protected is visible from the same package.
-		tPM.a = 11; // <------ COMPILATION ERROR
-		System.out.println("The value of a is changed. it is: " + tPM.a); // <------
+		
+		
+/*		tPM.a = 11; // <------ COMPILATION ERROR */
+		
+		
+	/*	System.out.println("The value of a is changed. it is: " + tPM.a); */ // <------
 																			// COMPILATION
 																			// ERROR
 
 		// Test the protected methods.
-		tPM.setA(12); // <------ COMPILATION ERROR
-		System.out.println("Protected methods are accessible. The value is: " + tPM.getA()); // <------
+		
+		
+	/*	tPM.setA(12); // <------ COMPILATION ERROR */
+		
+		
+		/*System.out.println("Protected methods are accessible. The value is: " + tPM.getA()); */ // <------ 
 																								// COMPILATION
 																								// ERROR
 	}

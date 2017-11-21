@@ -16,7 +16,11 @@ public class TestPrivateModifierSamePKG extends TestPrivateModifier {
 		TestPrivateModifier.justAMethod();
 		// ONLY this works. As it is static....
 
-		TestPrivateModifier.b = 6; // NOT AVAILABLE. Even though it is static
+		
+		//remove the following comments to see...
+		
+		
+		/*TestPrivateModifier.b = 6; */ // NOT AVAILABLE. Even though it is static
 	}
 
 	public void justAMethod1() {

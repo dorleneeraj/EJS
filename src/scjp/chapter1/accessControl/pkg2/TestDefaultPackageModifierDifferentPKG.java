@@ -8,10 +8,13 @@ import scjp.chapter1.accessControl.TestDefaultPackageModifier;
 public class TestDefaultPackageModifierDifferentPKG {
 	public static void main(String[] args) {
 
+		// Remove the following comments to see...
+		
+	/*	
 		TestDefaultPackageModifier tPM = new TestDefaultPackageModifier();
 		tPM.a = 11; // <------ NOT AVAILABLE!
 		tPM.setA(12); // <------ NOT AVAILABLE!
 		tPM.getA(); // <------ NOT AVAILABLE!
-
+*/
 	}
 }

@@ -11,9 +11,14 @@ public class TestProtectedModifierDifferentPkgInheritance2 extends TestProtected
 		// code, it will not be able to access the protected members...
 	}
 
+	
+	//remove the following comments to see...
+	
+	
 	public void justAMethod() {
 		TestProtectedModifier tPM = new TestProtectedModifier();
 
+	/*	
 		tPM.a = 12; // <------ NOT AVAILABLE!
 		tPM.getA(); // <------ NOT AVAILABLE!
 		tPM.setA(14); // <------ NOT AVAILABLE!
@@ -21,5 +26,6 @@ public class TestProtectedModifierDifferentPkgInheritance2 extends TestProtected
 		// Thus, only inheritance works in the case of protected modifiers.
 		// Only the subclass has access to them and no one else.
 
+*/
 	}
 }

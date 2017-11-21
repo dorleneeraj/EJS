@@ -10,10 +10,15 @@ public class TestDefaultPackageModifierDifferentPKGInheritancce extends TestDefa
 
 	}
 
+	//remove the following comments to see...
+	
 	public void justAMethod() {
+		/*
+		
 		this.a = 12; // <------ NOT AVAILABLE!
 		this.getA(); // <------ NOT AVAILABLE!
 		this.setA(15); // <------ NOT AVAILABLE!
+	*/
 	}
 
 }

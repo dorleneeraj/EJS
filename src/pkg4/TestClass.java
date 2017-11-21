@@ -9,7 +9,10 @@ package pkg4;
 import pkg2.*;
 import pkg2.MyClass;
 import pkg3.*;
-import pkg3.MyClass; // The import com.pkg3.MyClass collides with another import statement
+
+//remove the following comments to see...
+
+// import pkg3.MyClass; // The import com.pkg3.MyClass collides with another import statement
 
 public class TestClass {
 	public static void main(String[] args) {
