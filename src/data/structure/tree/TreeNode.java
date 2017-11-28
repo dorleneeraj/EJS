@@ -44,7 +44,21 @@ public class TreeNode<T> {
 
 	@Override
 	public String toString() {
-		return "TreeNode [ data=" + data + "]";
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("Data: " + this.data);
+		if (null != parent) {
+			builder.append(" Parent: " + parent.getData());
+		}
+		if (null != rightChild) {
+			builder.append(" Right: " + rightChild.getData());
+		}
+		if (null != leftChild) {
+			builder.append(" Left: " + leftChild.getData());
+		}
+
+		return builder.toString();
+		// return "" + data;
 	}
 
 	@Override
@@ -73,21 +87,6 @@ public class TreeNode<T> {
 			if (other.data != null)
 				return false;
 		} else if (!data.equals(other.data))
-			return false;
-		if (leftChild == null) {
-			if (other.leftChild != null)
-				return false;
-		} else if (!leftChild.equals(other.leftChild))
-			return false;
-		if (parent == null) {
-			if (other.parent != null)
-				return false;
-		} else if (!parent.equals(other.parent))
-			return false;
-		if (rightChild == null) {
-			if (other.rightChild != null)
-				return false;
-		} else if (!rightChild.equals(other.rightChild))
 			return false;
 		return true;
 	}
