@@ -1,5 +1,6 @@
 package data.structure.linkedlist;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class DoublyLinkedList<T> implements ILinkedList<T> {
@@ -181,6 +182,38 @@ public class DoublyLinkedList<T> implements ILinkedList<T> {
 	public ILinkedList<T> reverseList() {
 
 		return null;
+	}
+
+	@Override
+	public Iterator<Integer> iterator() {
+		return new DListIterator();
+	}
+
+	private class DListIterator implements Iterator<Integer> {
+		int i = 0;
+		int j = length;
+		INode<T> node = Head;
+
+		@Override
+		public boolean hasNext() {
+			return i < (j - 1);
+		}
+
+		@Override
+		public Integer next() {
+			// TODO Auto-generated method stub
+			int val = (Integer) node.getData();
+			node = ((DNode) node).Next;
+			i++;
+			return val;
+		}
+
+		@Override
+		public void remove() {
+
+			// Currently not supported...
+		}
+
 	}
 
 }

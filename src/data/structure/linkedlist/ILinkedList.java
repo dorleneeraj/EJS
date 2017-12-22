@@ -1,5 +1,6 @@
 package data.structure.linkedlist;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public interface ILinkedList<T> {
+public interface ILinkedList<T> extends Iterable<Integer> {
 	/**
 	 * <p>
 	 * Gets the reference to the head of the Linked List

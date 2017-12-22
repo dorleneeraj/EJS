@@ -1,5 +1,6 @@
 package data.structure.linkedlist;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class SinglyLinkedList<T> implements ILinkedList<T> {
@@ -228,5 +229,11 @@ public class SinglyLinkedList<T> implements ILinkedList<T> {
 			}
 		}
 		return isSuccess;
+	}
+
+	@Override
+	public Iterator<Integer> iterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

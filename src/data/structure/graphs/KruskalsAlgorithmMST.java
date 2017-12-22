@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import data.structure.disjointset.*;
-
 public class KruskalsAlgorithmMST {
 
 	public class EdgeComparator implements Comparator<NewEdge<Integer>> {

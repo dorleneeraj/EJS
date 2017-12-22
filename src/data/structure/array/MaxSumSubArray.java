@@ -18,13 +18,16 @@ public class MaxSumSubArray {
 						Arrays.asList(new Integer[] { -2, 1, -3, 4, -1, 2, 1,
 								-5, 4 }))));
 
-		// ArrayList<Integer> A = new ArrayList<Integer>(
-		// Arrays.asList(new Integer[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
-		// byMemoization(A, 8);
-		// System.out.println(maxSum);
-		// ArrayList<Integer> maxSubArray = buildList(A);
-		// Collections.reverse(maxSubArray);
-		// System.out.println(maxSubArray);
+		ArrayList<Integer> A = new ArrayList<Integer>(
+				Arrays.asList(new Integer[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
+		byMemoization(A, 8);
+		System.out.println(maxSum);
+		ArrayList<Integer> maxSubArray = buildList(A);
+		Collections.reverse(maxSubArray);
+		System.out.println(maxSubArray);
+		
+		
+		
 		System.out.println(maxSubArray(new ArrayList<Integer>(Arrays
 				.asList(new Integer[] { 4, -3, 3, 8 }))));
 	}
