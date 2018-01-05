@@ -1,5 +1,7 @@
 package data.structure.array;
 
+import java.util.HashMap;
+
 public class LargestSubarrayWithEqualZeroAndOne {
 	public static void main(String[] args) {
 		int[] array = { 1, 0, 1, 1, 1, 0, 0 };
@@ -56,4 +58,43 @@ public class LargestSubarrayWithEqualZeroAndOne {
 
 		return indices;
 	}
+
+	public void efficientSolution(int[] array) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		int sum = 0;
+		int max_len = 0;
+		int startIndex = 0;
+		int endIndex = -1;
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = (array[i] == 0) ? -1 : 1;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			sum += array[i];
+			if (sum == 0) {
+				max_len = i + 1;
+				endIndex = i;
+			}
+
+			if (map.containsKey(sum)) {
+				if (max_len < (i - map.get(sum + array.length))) {
+					max_len = i - map.get(sum + array.length);
+					endIndex = i;
+				}
+			} else {
+				map.put(sum + array.length, i);
+			}
+
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = (array[i] == -1) ? 0 : 1;
+		}
+
+		int end = endIndex - max_len + 1;
+		System.out.println(end + " to " + endIndex);
+
+	}
+
 }
