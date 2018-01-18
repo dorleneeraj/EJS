@@ -227,6 +227,9 @@ public class MaxRectangularAreaUnderHistogram {
 
 		// Run through all bars of given histogram
 		int i = 0;
+
+		// 6, 2, 5, 4, 5, 1, 6
+
 		while (i < n) {
 			// If this bar is higher than the bar on top stack, push it to stack
 			if (s.empty() || hist[s.peek()] <= hist[i])
