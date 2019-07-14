@@ -200,6 +200,7 @@ public class Base64Impl {
 	 * @return
 	 */
 	public static String decodeFromBase64(String base64EncodedString) throws Exception {
+		
 		// Decoding: Convert 4 characters of the encoded string to 3 characters of
 		// decoded string
 
@@ -215,6 +216,24 @@ public class Base64Impl {
 		// check if base64EncodedString.length is divisible by 4. else it is an invalid
 		// base64 encoded string
 		// also check if pads are not more than 2
+		if ((base64EncodedString.length() % 4) != 0) {
+			throw new Exception("Invalid encoded length");
+		}
+
+		int padsAdded = 0;
+		int index = base64EncodedString.length() - 1;
+		while (padsAdded < 3) {
+			if (base64EncodedString.charAt(index) == '=') {
+				padsAdded++;
+				index--;
+				continue;
+			}
+			break;
+		}
+
+		if (padsAdded >= 3) {
+			throw new Exception("More that 2 padding characters added!");
+		}
 
 		/**
 		 * Will add these minor details later.
@@ -226,18 +245,29 @@ public class Base64Impl {
 			String charsToProcess = base64EncodedString.substring(beginIndex, endIndex);
 			StringBuilder binaryBuilder = new StringBuilder();
 			for (int j = 0; j < charsToProcess.length(); j++) {
-				String binaryString = Integer.toBinaryString(decodingIndexList.indexOf(charsToProcess.charAt(j)));
-				int zerosToPrepend = 6 - binaryString.length();
-				if (zerosToPrepend > 0) {
-					StringBuilder zeroPrepender = new StringBuilder();
-					for (int k = 0; k < zerosToPrepend; k++) {
-						zeroPrepender.append("0");
+				int listIndex = decodingIndexList.indexOf(charsToProcess.charAt(j));
+				if (listIndex >= 0) {
+					String binaryString = Integer.toBinaryString(listIndex);
+					int zerosToPrepend = 6 - binaryString.length();
+					if (zerosToPrepend > 0) {
+						StringBuilder zeroPrepender = new StringBuilder();
+						for (int k = 0; k < zerosToPrepend; k++) {
+							zeroPrepender.append("0");
+						}
+						zeroPrepender.append(binaryString);
+						binaryString = zeroPrepender.toString();
 					}
-					zeroPrepender.append(binaryString);
-					binaryString = zeroPrepender.toString();
+					binaryBuilder.append(binaryString);
 				}
-				binaryBuilder.append(binaryString);
 			}
+			if (binaryBuilder.toString().length() < 24) {
+				if (padsAdded == 1) {
+					binaryBuilder.append("000000");
+				} else if (padsAdded == 2) {
+					binaryBuilder.append("0000");
+				}
+			}
+
 			String binaryOP = binaryBuilder.toString();
 
 			Arrays.stream( // Create a Stream
@@ -251,6 +281,7 @@ public class Base64Impl {
 
 		decodedString = decodedStringBuilder.toString();
 		return decodedString;
+	
 	}
 
 }
